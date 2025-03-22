@@ -13,7 +13,6 @@ Welcome to the **Flutter Donation App Workshop**! In this workshop, you'll learn
 - [☁ Setup Supabase](#-step-6-setting-up-supabase)
 - [🚀 Running Your App](#-congratulations-)
 - [🎯 Conclusion](#-conclusion)
-- [📱 Download our App](#-why-choose-our-donation-app-)
 - [🏍 About Panther Racing Auth Team](#%EF%B8%8F-discover-panther-racing-auth)
 - [📝 Wikipedia](#-donation-app---wikipedia-style-guide)
 
@@ -64,7 +63,7 @@ Supabase is an **open-source backend-as-a-service (BaaS)** that provides a **Pos
 ## ⚡ Step 1: Setting Up Zapprun
 
 ### 🛠 Part A: Open Zapprun
-1️⃣ **Go to** [Zapprun](https://zapprun.com) and **create a new Flutter project**.  
+1️⃣ **Go to** [Zapprun](https://zapp.run) and **create a new Flutter project**.  
 2️⃣ **Name your project** → `donation_app` (or any name you prefer).  
 3️⃣ **Wait for initialization** → Zapprun will set up your project automatically.  
 
@@ -168,20 +167,18 @@ class MyApp extends StatelessWidget {
 ---
 
 ### 🛠 Step 3: Run Your App
-Use **Zapprun’s built-in emulator** or connect your own device.  
+Use **Zapprun’s built-in emulator**.  
 Run the command:  
 
 ```sh
 flutter run
-```
-
-🚀 Now we're ready to setup our Database!  
+```  
 
 ---
 
 ## 🎨 Step 4: Building a Better UI with Donations List
 
-In this step, we will enhance the basic UI by displaying a list of donations and show a list of donation items with their names in a more structured way. The user will be able to select a donation item to view more details.
+In this step, we will enhance the basic UI by displaying a list of donations and show a list of donation items with their names in a more structured way. The user will be able to select a donation item to view more details.Also, we will add a leaderboard view for top donors!
 
 ### 🛠 Part A: Create a Donation Model
 
@@ -226,7 +223,7 @@ class DonationItem {
 ```
 ### 🛠 Part B: Create a Donator Model
 
-First, create a model class to represent donation items. Create a file called **`donator.dart`**:
+Then, create a model class to represent the Donor. Create a file called **`donator.dart`**:
 
 ```dart
 class Donator {
@@ -475,7 +472,7 @@ class _DonationListState extends State<DonationList> {
 
 ### 🛠 Part D: Create a `Leaderboard View`
 
-Next, create a new file **`leaderboard.dart`** where we will create a list view to display the donations that each donator has done.
+Next, create a new file **`leaderboard.dart`** where we will create a list view to display each donor's contribution.
 
 ```dart
 import 'package:flutter/material.dart';
@@ -641,9 +638,7 @@ class _LeaderboardState extends State<Leaderboard> {
 
 ### 🛠 Part E: Update `Home` page to include the Donation List
 
-Now, update your **`home.dart`** to display the `DonationList`. The `HomePage` widget will use the `DonationList` widget to show a list of donation items.
-
-Create or update **`home.dart`** with the following code:
+Now, update your **`home.dart`** to display the `DonationList` & `Leaderboard`. The `HomePage` widget will use the `DonationList` widget to show a list of donation items & `Leaderboard` widget to to show each donor's total contribution ,sorted and ranked.
 
 ```dart
 import 'package:flutter/material.dart';
@@ -747,7 +742,7 @@ class _HomePageState extends State<HomePage> {
 
 
 ## 🛠 Step 5: Run Your App
-Use **Zapprun’s built-in emulator** or connect your own device.  
+Use **Zapprun’s built-in emulator**.  
 Run the command:  
 
 ```sh
@@ -1019,7 +1014,7 @@ Future<void> addDonatorToSupabase({
 Inside `functions.dart`, add:
 
 ```dart
- import 'package:flutter_app/donation_item.dart';
+import 'package:flutter_app/donation_item.dart';
 import 'package:flutter_app/donator.dart';
 import 'package:flutter_app/supabase_config.dart';
 
@@ -1294,9 +1289,7 @@ class _HomePageState extends State<HomePage> {
 
 # 🎉 **Congratulations!** 🎉
 
-**You've successfully built your**  
-### **Donation App**  
-**with Supabase and Flutter!** 🚀
+**You've successfully built your Donation App with Supabase and Flutter!** 🚀
 
 ---
 
@@ -1336,42 +1329,6 @@ The setup is complete, and now the **fun part** begins! 🎉
 
 ---
 ---
-
-## 🌟 Why Choose Our Donation App? 🌟
-
-Our **Donation App** is more than just a tool; it's a platform to connect generous hearts with impactful causes. Here's why our app stands out:
-
-### 🚀 Key Features:
-- **Real-Time Updates**: Watch donations and contributions happen live, fostering a sense of community and urgency.
-- **User-Friendly Interface**: Designed with simplicity in mind, making it easy for anyone to navigate and contribute.
-- **Comprehensive Tracking**: View detailed records of donations, amounts, and donor information, all in one place.
-- **Secure & Reliable**: Built using Supabase and Flutter, ensuring your data is safe and the app performs seamlessly.
-
-### 💖 Why It Matters:
-- **Make a Difference in Real-Time**: Every donation is tracked and displayed immediately, encouraging more contributions.
-- **Transparent Processes**: See exactly where your donations are going and how they're making an impact.
-- **Inclusive Platform**: Open to everyone, with a focus on accessibility and ease of use.
-
----
-
-## 📲 Get Started Now!
-
-<div align="center">
-
-**Download the app and start making a difference today!**
-
-### Available On:
-<a href="https://play.google.com/store/apps/details?id=com.example.donationapp" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/600px-Octicons-mark-github.svg.png?20180806170715" height="60"></a>  
-
-</div>
-
----
-
-Feel free to share feedback, suggestions, or feature requests. Let's grow together! 🚀
-
----
-
-
 
 ## 🏍️ **Discover Panther Racing AUTh**  
 
@@ -1419,53 +1376,7 @@ Stay connected and follow our exciting journey:
 [![Official Website](https://img.shields.io/badge/🌐-Official_Website-blue?style=for-the-badge)](https://pantherauth.gr/?utm_source=chatgpt.com)  
 [![YouTube Channel](https://img.shields.io/badge/🎥-Subscribe_to_YouTube-red?style=for-the-badge)](https://www.youtube.com/channel/UCnCk6y5iHD9FkplzY4gyLtA/about)  
 [![LinkedIn Profile](https://img.shields.io/badge/💼-Connect_on_LinkedIn-blue?style=for-the-badge)](https://www.linkedin.com/company/panther-racing-auth/)  
-[![GitHub Repository](https://img.shields.io/badge/👨‍💻-Explore_on_GitHub-black?style=for-the-badge)](https://github.com/Panther-Racing-AUTh?utm_source=chatgpt.com)  
-
----
-
-
-### 🤝 **Support Our Journey**  
-
-Every contribution helps Panther Racing AUTh push the boundaries of innovation in motorsports. Your support enables us to:  
-- 🏎️ Build state-of-the-art racing motorcycles.  
-- 🌍 Compete on international platforms.  
-- 🚀 Train and inspire the next generation of engineers.  
-
----
-
-### 💖 **Be a Part of Our Mission**  
-
-**Your support drives us forward!** Whether it's a donation or a sponsorship, you're part of our success story.  
-
-<div style="text-align: center; margin-top: 20px;">
-  <a href="https://pantherauth.gr/support?utm_source=chatgpt.com" 
-     style="
-       display: inline-flex;
-       align-items: center;
-       justify-content: center;
-       background: transparent;
-       padding: 0;
-       border-radius: 50px;
-       text-decoration: none;
-       transition: transform 0.2s ease-in-out;
-     "
-     onmouseover="this.style.transform='scale(1.1)';"
-     onmouseout="this.style.transform='scale(1)';">
-    <img src="https://wbpscupsc.com/wp-content/uploads/2020/04/support-us-banner.jpg" 
-         alt="Support Us" 
-         width="240" height="80" 
-         style="
-           border-radius: 40px; 
-           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
-           transition: box-shadow 0.3s ease;
-         ">
-  </a>
-</div>
-
-
-
-
-
+[![GitHub Repository](https://img.shields.io/badge/👨‍💻-Explore_on_GitHub-black?style=for-the-badge)](https://github.com/Panther-Racing-AUTh?utm_source=chatgpt.com)
 
 ---
 
