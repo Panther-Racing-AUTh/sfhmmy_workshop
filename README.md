@@ -814,6 +814,44 @@ Supabase is an **open-source alternative to Firebase**, providing a powerful bac
 
 5. Navigate to **Settings > API** and copy your **Project URL** and **Anon Key**.
 
+---
+## 🚨 Warning 🚨 Important Security Notice
+
+### ⚠️ Supabase Configuration & Security Best Practices
+
+For production environments, **do not** hardcode your Supabase credentials (URL and Anon Key) directly in the source code. Exposing these credentials can lead to security vulnerabilities, such as unauthorized access to your database.
+
+### 🔐 Secure Implementation
+Instead of hardcoding, consider the following best practices:
+
+1. **Use Environment Variables**
+   Store your Supabase URL and Anon Key in environment variables:
+   
+   ```bash
+   export SUPABASE_URL="https://your-project.supabase.co"
+   export SUPABASE_ANON_KEY="your-anon-key"
+   ```
+   Then access them in your Dart/Flutter app using:
+   
+   ```dart
+   import 'dart:io';
+   
+   final String supabaseUrl = Platform.environment['SUPABASE_URL'] ?? '';
+   final String supabaseAnonKey = Platform.environment['SUPABASE_ANON_KEY'] ?? '';
+   ```
+
+2. **Use a Secrets Manager**
+   Services like AWS Secrets Manager, Google Secret Manager, or Firebase Remote Config can help store and manage sensitive credentials securely.
+
+3. **Restrict Supabase Policies**
+   Utilize [Row-Level Security (RLS)](https://supabase.com/docs/guides/auth/row-level-security) to enforce access control at the database level.
+
+4. **Configure API Keys with Limited Permissions**
+   Avoid using the `service_role` key in client-side applications, as it has full database access.
+
+5. **Monitor API Usage**
+   Regularly check your Supabase dashboard for unauthorized requests and set up alerts for suspicious activities.
+---
 
 ### 🛠 Part C: Download packages
 Navigate to `pubspec.yaml` & when you find `dependencies` section, update with this:
