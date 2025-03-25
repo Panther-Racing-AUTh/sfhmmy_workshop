@@ -821,9 +821,9 @@ Supabase is an **open-source alternative to Firebase**, providing a powerful bac
 
 For production environments, **do not** hardcode your Supabase credentials (URL and Anon Key) directly in the source code. Exposing these credentials can lead to security vulnerabilities, such as unauthorized access to your database.
 
-### 💭 **Supabase URL**: This is the **unique** endpoint for your Supabase project, used to interact with the database and services.
+💭 *Supabase URL*: This is the **unique** endpoint for your Supabase project, used to interact with the database and services.
 
-### 💭 **Supabase Anon Key**: A public API key that allows **read and write access** based on your project's **authentication rules**. It should be **kept secure in production**.
+💭 *Supabase Anon Key*: A public API key that allows **read and write access** based on your project's **authentication rules**. It should be **kept secure in production**.
 
 ### 🔐 Secure Implementation
 Instead of hardcoding, consider the following best practices:
