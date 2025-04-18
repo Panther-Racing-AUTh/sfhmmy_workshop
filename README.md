@@ -271,6 +271,8 @@ Next, create a new file **`donation_item_list.dart`** where we will create a lis
 
 ```dart
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_app/supabase_config.dart';
 import 'donation_item.dart';
 
 class DonationList extends StatefulWidget {
@@ -347,9 +349,9 @@ class _DonationListState extends State<DonationList> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  onPressed: () {
-                    // Add your donation action here
-                    Navigator.of(context).pop();
+                 onPressed: () {
+                    Navigator.of(context).pop(); // Close the current dialog
+                    _showDonationInputDialog(context, donation); // Show input dialog
                   },
                   child: Text(
                     'Donate Now',
@@ -377,6 +379,58 @@ class _DonationListState extends State<DonationList> {
       ),
     );
   }
+void _showDonationInputDialog(BuildContext context, DonationItem donation) {
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController amountController = TextEditingController();
+
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      title: Text("Complete Donation"),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextField(
+            controller: nameController,
+            decoration: InputDecoration(labelText: "Your Name"),
+          ),
+          TextField(
+            controller: amountController,
+            decoration: InputDecoration(labelText: "Amount"),
+            keyboardType: TextInputType.numberWithOptions(decimal: true),
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
+            ],
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text("Cancel"),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            final name = nameController.text;
+            final amount = amountController.text;
+
+            // Optionally, validate here
+            if (name.isEmpty || amount.isEmpty) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text("Please enter both name and amount.")),
+              );
+              return;
+            }
+            addDonatorToSupabase(name: name,amountDonated: double.parse(amount),donationItemId: donation.id,donationDate: DateTime.now());
+            Navigator.pop(context); // Close dialog
+          },
+          child: Text("Submit"),
+        ),
+      ],
+    ),
+  );
+}
 
   @override
   Widget build(BuildContext context) {
