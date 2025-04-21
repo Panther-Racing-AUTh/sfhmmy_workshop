@@ -1429,7 +1429,7 @@ void _showDonationInputDialog(BuildContext context, DonationItem donation) {
   }
 }
 ```
-### 🛠 Part F: Update `Main` page
+### 🛠 Part G: Update `Main` page
 
 Now, let's establish the `initialization of Supabase` inside `main.dart` before running the app.
 
@@ -1460,7 +1460,7 @@ class MyApp extends StatelessWidget {
   }
 }
 ```
-### 🛠 Part G: Update  `Home` page 
+### 🛠 Part H: Update  `Home` page 
 
 Last step before running the app, we have to update your **`home.dart`**,by adding `loadInitialData()` & `setupListeners()` functions.
  
