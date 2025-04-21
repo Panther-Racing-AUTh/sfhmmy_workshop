@@ -422,7 +422,7 @@ void _showDonationInputDialog(BuildContext context, DonationItem donation) {
               );
               return;
             }
-            addDonatorToSupabase(name: name,amountDonated: double.parse(amount),donationItemId: donation.id,donationDate: DateTime.now());
+            //addDonatorToSupabase(name: name,amountDonated: double.parse(amount),donationItemId: donation.id,donationDate: DateTime.now());
             Navigator.pop(context); // Close dialog
           },
           child: Text("Submit"),
@@ -1169,6 +1169,264 @@ bool calculateDonationItemTotals({
   groupedAndSortedDonators.sort((a, b) => b.amountDonated.compareTo(a.amountDonated));
 
   return groupedAndSortedDonators;
+}
+```
+### 🛠 Part F: Update the list of `Donation Items`
+
+Next, update file **`donation_item_list.dart`** where we will create a list view to display the donations. Each item will be clickable, allowing the user to choose where they would like to donate.
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_app/supabase_config.dart';
+import 'donation_item.dart';
+
+class DonationList extends StatefulWidget {
+  final List<DonationItem> donations;
+
+  const DonationList({super.key, required this.donations});
+
+  @override
+  State<DonationList> createState() => _DonationListState();
+}
+
+class _DonationListState extends State<DonationList> {
+  // Function to show the dialog when tapping on a donation item
+  Future<void> showCardDialog(BuildContext context, DonationItem donation) {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25), // Rounded corners for the dialog with a smoother curve
+        ),
+        backgroundColor: Colors.white, // White background to keep it clean
+        title: Container(
+          padding: EdgeInsets.symmetric(vertical: 10),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.blueAccent, Colors.purpleAccent], // Gradient background for the title
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(25)), // Rounded top corners
+          ),
+          child: Text(
+            donation.name,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.white, // Title text color
+            ),
+          ),
+        ),
+        content: SingleChildScrollView( // Allows scrolling for long content
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 15),
+              Text(
+                donation.description,
+                style: TextStyle(fontSize: 18, color: Colors.black87),
+              ),
+              SizedBox(height: 20),
+              Text(
+                'Amount: \$${donation.amount.toStringAsFixed(2)}',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.green,
+                ),
+              ),
+              SizedBox(height: 30),
+              // Donation action button with improved styling
+              Center(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.green, // Button color
+                    onPrimary: Colors.white, // Text color inside the button
+                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15), // Button padding
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    elevation: 10, // Add shadow for depth
+                    textStyle: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                 onPressed: () {
+                    Navigator.of(context).pop(); // Close the current dialog
+                    _showDonationInputDialog(context, donation); // Show input dialog
+                  },
+                  child: Text(
+                    'Donate Now',
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text(
+              "Close",
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.blueAccent, // Close button color
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+void _showDonationInputDialog(BuildContext context, DonationItem donation) {
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController amountController = TextEditingController();
+
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      title: Text("Complete Donation"),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextField(
+            controller: nameController,
+            decoration: InputDecoration(labelText: "Your Name"),
+          ),
+          TextField(
+            controller: amountController,
+            decoration: InputDecoration(labelText: "Amount"),
+            keyboardType: TextInputType.numberWithOptions(decimal: true),
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
+            ],
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text("Cancel"),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            final name = nameController.text;
+            final amount = amountController.text;
+
+            // Optionally, validate here
+            if (name.isEmpty || amount.isEmpty) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text("Please enter both name and amount.")),
+              );
+              return;
+            }
+            addDonatorToSupabase(name: name,amountDonated: double.parse(amount),donationItemId: donation.id,donationDate: DateTime.now());
+            Navigator.pop(context); // Close dialog
+          },
+          child: Text("Submit"),
+        ),
+      ],
+    ),
+  );
+}
+
+  @override
+  Widget build(BuildContext context) {
+    // Get the width of the screen for responsiveness
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return SizedBox(
+      width: screenWidth,
+      height: 200,
+      child: widget.donations.isEmpty
+          // If donation list is empty, show a message
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.error_outline,
+                    color: Colors.blueAccent,
+                    size: 50,
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    "No Donations Available!",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.black54,
+                    ),
+                  ),
+                  SizedBox(height: 5),
+                  Text(
+                    "Come Back Later!",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.black87,
+                    ),
+                  ),
+                ],
+              ),
+            )
+          // If donation list is not empty, show the donation items
+          : Row(
+              children: widget.donations.map((donation) {
+                return GestureDetector(
+                  onTap: () => showCardDialog(context, donation), // Open dialog on tap
+                  child: Card(
+                    margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Container(
+                      width: screenWidth < 600 ? 250 : 350, // Adjust width for smaller screens
+                      padding: EdgeInsets.all(15),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Icon(
+                            Icons.favorite_border,
+                            color: Colors.blueAccent,
+                            size: 40,
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            donation.name,
+                            style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          SizedBox(height: 5),
+                          Text(
+                            donation.description,
+                            style: TextStyle(fontSize: 16, color: Colors.black54),
+                            overflow: TextOverflow.ellipsis, // Prevent overflow
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            '\$${donation.amount.toStringAsFixed(2)}',
+                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.green),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+    );
+  }
 }
 ```
 ### 🛠 Part F: Update `Main` page
